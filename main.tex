@@ -127,7 +127,7 @@ subsubsectionstyle=show/shaded/hide]
 \end{frame}
 
 \begin{frame}{Virtualization, the technical trick}
-    A single physical server in a data center is a powerful machine, often with dozens of cores and hundreds of gigabytes of RAM, far more than most small customer needs.
+    A single physical server in a data center is a powerful machine, often with dozens of cores and hundreds of gigabytes of RAM, far more than most small customers need.
 
     \begin{figure}[htpb]
         \begin{center}
@@ -260,7 +260,7 @@ curl http://<vm-ip>:8000
 \section{Going Public}
 
 \begin{frame}{What is still missing}
-    The container is now reachable at \texttt{http://<vm-ip>:8000}, which is technically a working public AI service but almost no one would actually use.
+    The container is now reachable at \texttt{http://<vm-ip>:8000}, which is technically a working public AI service but almost no one would actually use it.
 
     \begin{itemize}
         \item An IP is not how most people find things on the internet. Hard to remember, and fragile when the VM changes
@@ -292,7 +292,7 @@ api.example.com.   A   <vm-ip>
 \begin{frame}{Why HTTPS}
     HTTPS (HTTP over TLS) wraps HTTP in an encrypted, authenticated tunnel.
     \begin{itemize}
-        \item Encrypts traffic so a network observer sees only scrambled data, only the sender and the receiver can decrypt the data
+        \item Encrypts traffic so a network observer sees only scrambled data. Only the sender and the receiver can decrypt the data
         \item Lets the client verify it is talking to the real \texttt{api.example.com} via a certificate
     \end{itemize}
 
@@ -408,7 +408,7 @@ sudo certbot renew --dry-run
     \begin{block}{Outline}
         \begin{enumerate}
             \item Pick a provider. Free tier (AWS/GCP/Azure trial credits) or cheap small VM (Hetzner, DO, Vultr)
-            \item Create a small VM and setup the basic runtime
+            \item Create a small VM and set up the basic runtime
             \item Pull your image and run it, then point the A.2 client at \texttt{http://<VM\_IP>:<PORT>} and run a few requests
         \end{enumerate}
     \end{block}
@@ -418,12 +418,23 @@ sudo certbot renew --dry-run
     \begin{enumerate}
         \item Get a free domain on DuckDNS, point an A record at the VM
         \item Install Nginx, configure it as a reverse proxy on port 80. Confirm the API still works through \texttt{http://<your-domain>}
-        \item Get a HTTPS certificate with Certbot and Let's Encrypt
+        \item Get an HTTPS certificate with Certbot and Let's Encrypt
         \item Update the A.2 client to use the HTTPS URL, confirm requests still go through
     \end{enumerate}
 \end{frame}
 
-% TODO: Add a "What you should walk away with" slide
+\begin{frame}{What you should walk away with}
+    By the end of the exercise, you should be able to:
+    \begin{enumerate}
+        \item Understand what the cloud is, and why a plain VM is a sensible starting point
+        \item Deploy a containerized AI server onto a cloud VM
+        \item Make a service public with a domain name and HTTPS
+    \end{enumerate}
+
+    \vspace{0.5em}
+    Our AI server is now a public service backed by infrastructure we do not own.
+    In the next module, we look at the opposite choice: running on hardware we do own, at the edge.
+\end{frame}
 
 
 \appendix
