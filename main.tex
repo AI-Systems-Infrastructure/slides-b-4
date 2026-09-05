@@ -27,6 +27,11 @@
 \usepackage{AAU}
 \AtBeginSubsection{}
 \setbeamertemplate{navigation symbols}{}
+\ifdefined\hidenotes\else
+    \setbeameroption{show notes on second screen=right}
+    \setbeamerfont{note page}{size=\large}
+    \hypersetup{pdfkeywords={SP-Right}}
+\fi
 
 \def\cmd#1{\texttt{\color{red}\footnotesize $\backslash$#1}}
 \def\env#1{\texttt{\color{blue}\footnotesize #1}}
@@ -63,6 +68,8 @@
             \includegraphics[keepaspectratio, scale=0.5]{aau-logo-left-uk}
         \end{center}
     \end{figure}
+\note{
+}
 \end{frame}
 
 
@@ -70,6 +77,8 @@
 \tableofcontents[sectionstyle=show,
 subsectionstyle=show/shaded/hide,
 subsubsectionstyle=show/shaded/hide]
+\note{
+}
 \end{frame}
 
 
@@ -81,6 +90,8 @@ subsubsectionstyle=show/shaded/hide]
 
     That solves the \textit{how do we ship the software} problem.
     It leaves the \textit{whose machine does it run on} problem wide open.
+\note{
+}
 \end{frame}
 
 
@@ -96,6 +107,8 @@ subsubsectionstyle=show/shaded/hide]
 
     \vspace{0.5em}
     The standard answer: rent a computer somewhere else, and run our container there.
+\note{
+}
 \end{frame}
 
 
@@ -111,6 +124,8 @@ subsubsectionstyle=show/shaded/hide]
 
     Not a new kind of computing or a special technology.
     The cloud is other people's computers, sitting in data centers, that we rent over the internet.
+\note{
+}
 \end{frame}
 
 
@@ -129,6 +144,8 @@ subsubsectionstyle=show/shaded/hide]
     \begin{block}{The downside}
         We are now dependent on the provider's pricing, availability, and policies.
     \end{block}
+\note{
+}
 \end{frame}
 
 
@@ -143,6 +160,8 @@ subsubsectionstyle=show/shaded/hide]
 
     Virtualization lets the provider slice that machine into many smaller \textbf{virtual machines} through a small piece of software called a hypervisor.
     Each VM behaves like a complete computer with its own CPU, memory, disk, and OS.
+\note{
+}
 \end{frame}
 
 
@@ -160,6 +179,8 @@ subsubsectionstyle=show/shaded/hide]
     \end{block}
 
     In practice cloud providers rely on both: the hypervisor splits each physical server into VMs sold to different customers, and inside each VM the customer typically runs containers to package and deploy applications.
+\note{
+}
 \end{frame}
 
 
@@ -182,6 +203,8 @@ subsubsectionstyle=show/shaded/hide]
 
     \vspace{0.3em}
     For this course it does not matter which one. The recipe (rent a VM, install Docker, run your container) translates across all of them.
+\note{
+}
 \end{frame}
 
 
@@ -204,6 +227,8 @@ subsubsectionstyle=show/shaded/hide]
         VMs with one or more GPUs attached, for training models or running inference on heavier ones.
         Powerful but among the most expensive line items.
     \end{block}
+\note{
+}
 \end{frame}
 
 
@@ -220,6 +245,8 @@ subsubsectionstyle=show/shaded/hide]
         On a VM we install Docker ourselves, run our container with \texttt{docker run}, and when something breaks we can SSH in and check \texttt{docker logs}.
         Managed services tend to wrap our app in their own scheduling, networking, and logging layers.
     \end{block}
+\note{
+}
 \end{frame}
 
 
@@ -245,6 +272,8 @@ subsubsectionstyle=show/shaded/hide]
         \end{center}
     \end{figure}
 \end{minipage}
+\note{
+}
 \end{frame}
 
 
@@ -265,6 +294,8 @@ docker run -d --name ai-server \
     \begin{minted}{bash}
 curl http://<vm-ip>:8000
     \end{minted}
+\note{
+}
 \end{frame}
 
 
@@ -282,6 +313,8 @@ curl http://<vm-ip>:8000
 
     \vspace{0.5em}
 The fix is to have a \textbf{domain name} and an \textbf{HTTPS certificate}.
+\note{
+}
 \end{frame}
 
 
@@ -300,6 +333,8 @@ api.example.com.   A   <vm-ip>
             \item Registrars (Cloudflare, Porkbun, Namecheap): own domain, 10-15 EUR per year for a typical \texttt{.com}
         \end{itemize}
     \end{block}
+\note{
+}
 \end{frame}
 
 
@@ -311,6 +346,8 @@ api.example.com.   A   <vm-ip>
     \end{itemize}
 
     Since 2015, \textbf{Let's Encrypt} issues free, automated certificates, valid 90 days and renewable indefinitely.
+\note{
+}
 \end{frame}
 
 
@@ -324,6 +361,8 @@ api.example.com.   A   <vm-ip>
     \end{figure}
 
     The standard pattern is to put a \textbf{reverse proxy} in front: a separate program that listens on ports 80 and 443, terminates HTTPS, and forwards the decrypted request to our container.
+\note{
+}
 \end{frame}
 
 
@@ -341,6 +380,8 @@ sudo apt install -y nginx
         \end{minted}
         Starts automatically, serves a default welcome page on port 80.
     \end{block}
+\note{
+}
 \end{frame}
 
 
@@ -366,6 +407,8 @@ server {
         \item \texttt{location /}: matches every path, forwards to our container
         \item Four \texttt{proxy\_set\_header} lines preserve client info that Nginx would otherwise strip
     \end{itemize}
+\note{
+}
 \end{frame}
 
 
@@ -384,6 +427,8 @@ sudo systemctl reload nginx
 
     Now \texttt{http://api.example.com} reaches our container.
     Drop port 8000 from the public firewall.
+\note{
+}
 \end{frame}
 
 
@@ -401,6 +446,8 @@ sudo certbot --nginx -d api.example.com
     \end{minted}
 
     Certbot validates the domain (places a file under \texttt{/.well-known/}, lets Let's Encrypt fetch it), installs the cert, edits the Nginx config to add the \texttt{listen 443 ssl;} block, sets up auto-renewal.
+\note{
+}
 \end{frame}
 
 
@@ -416,6 +463,8 @@ sudo certbot --nginx -d api.example.com
 sudo certbot renew --dry-run
 \end{minted}
 
+\note{
+}
 \end{frame}
 
 
@@ -433,6 +482,8 @@ sudo certbot renew --dry-run
             \item Pull your image and run it, then point the A.2 client at \texttt{http://<VM\_IP>:<PORT>} and run a few requests
         \end{enumerate}
     \end{block}
+\note{
+}
 \end{frame}
 
 
@@ -443,6 +494,8 @@ sudo certbot renew --dry-run
         \item Get an HTTPS certificate with Certbot and Let's Encrypt
         \item Update the A.2 client to use the HTTPS URL, confirm requests still go through
     \end{enumerate}
+\note{
+}
 \end{frame}
 
 
@@ -457,6 +510,8 @@ sudo certbot renew --dry-run
     \vspace{0.5em}
     Our AI server is now a public service backed by infrastructure we do not own.
     In the next module, we look at the opposite choice: running on hardware we do own, at the edge.
+\note{
+}
 \end{frame}
 
 
@@ -471,6 +526,8 @@ sudo certbot renew --dry-run
 {\small \faEnvelope\ \href{mailto:lyan@cs.aau.dk}{lyan@cs.aau.dk} \\
 \faGlobe\ \href{https://www.yanlincs.com}{www.yanlincs.com}}
 \end{center}
+\note{
+}
 \end{frame}
 
 \end{document}
