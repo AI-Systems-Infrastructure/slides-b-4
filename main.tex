@@ -65,11 +65,13 @@
     \end{figure}
 \end{frame}
 
+
 \begin{frame}
 \tableofcontents[sectionstyle=show,
 subsectionstyle=show/shaded/hide,
 subsubsectionstyle=show/shaded/hide]
 \end{frame}
+
 
 
 \section{Whose Machine Runs the Container}
@@ -80,6 +82,7 @@ subsubsectionstyle=show/shaded/hide]
     That solves the \textit{how do we ship the software} problem.
     It leaves the \textit{whose machine does it run on} problem wide open.
 \end{frame}
+
 
 \begin{frame}{Our laptop is not the answer}
     Running the container on our laptop is fine for development.
@@ -96,6 +99,7 @@ subsubsectionstyle=show/shaded/hide]
 \end{frame}
 
 
+
 \section{What Is the Cloud}
 
 \begin{frame}{Other people's computers}
@@ -108,6 +112,7 @@ subsubsectionstyle=show/shaded/hide]
     Not a new kind of computing or a special technology.
     The cloud is other people's computers, sitting in data centers, that we rent over the internet.
 \end{frame}
+
 
 \begin{frame}{Why the cloud exists}
     Around 2006, Amazon noticed that the infrastructure they had to size for peak shopping load sat idle most of the time.
@@ -126,6 +131,7 @@ subsubsectionstyle=show/shaded/hide]
     \end{block}
 \end{frame}
 
+
 \begin{frame}{Virtualization, the technical trick}
     A single physical server in a data center is a powerful machine, often with dozens of cores and hundreds of gigabytes of RAM, far more than most small customers need.
 
@@ -138,6 +144,7 @@ subsubsectionstyle=show/shaded/hide]
     Virtualization lets the provider slice that machine into many smaller \textbf{virtual machines} through a small piece of software called a hypervisor.
     Each VM behaves like a complete computer with its own CPU, memory, disk, and OS.
 \end{frame}
+
 
 \begin{frame}{Containers and VMs, side by side}
     We met containers in Module B.2 with the same kind of diagram. Both provide isolation, at different levels.
@@ -154,6 +161,7 @@ subsubsectionstyle=show/shaded/hide]
 
     In practice cloud providers rely on both: the hypervisor splits each physical server into VMs sold to different customers, and inside each VM the customer typically runs containers to package and deploy applications.
 \end{frame}
+
 
 \begin{frame}{The big three and the rest}
     \begin{block}{Hyperscalers}
@@ -177,6 +185,7 @@ subsubsectionstyle=show/shaded/hide]
 \end{frame}
 
 
+
 \section{Common Cloud Services}
 
 \begin{frame}{Three categories that matter for us}
@@ -197,6 +206,7 @@ subsubsectionstyle=show/shaded/hide]
     \end{block}
 \end{frame}
 
+
 \begin{frame}{Why start with a plain VM}
     A reasonable first instinct when browsing a cloud catalog is to reach for the most automated option.
     For learning and small AI services, we argue the opposite is usually wiser.
@@ -211,6 +221,7 @@ subsubsectionstyle=show/shaded/hide]
         Managed services tend to wrap our app in their own scheduling, networking, and logging layers.
     \end{block}
 \end{frame}
+
 
 
 \section{Deploying to a Cloud VM}
@@ -257,6 +268,7 @@ curl http://<vm-ip>:8000
 \end{frame}
 
 
+
 \section{Going Public}
 
 \begin{frame}{What is still missing}
@@ -271,6 +283,7 @@ curl http://<vm-ip>:8000
     \vspace{0.5em}
 The fix is to have a \textbf{domain name} and an \textbf{HTTPS certificate}.
 \end{frame}
+
 
 \begin{frame}[fragile]{Domains and DNS}
     Recall from Module A.1: domain points to one or more IP addresses.
@@ -289,6 +302,7 @@ api.example.com.   A   <vm-ip>
     \end{block}
 \end{frame}
 
+
 \begin{frame}{Why HTTPS}
     HTTPS (HTTP over TLS) wraps HTTP in an encrypted, authenticated tunnel.
     \begin{itemize}
@@ -298,6 +312,7 @@ api.example.com.   A   <vm-ip>
 
     Since 2015, \textbf{Let's Encrypt} issues free, automated certificates, valid 90 days and renewable indefinitely.
 \end{frame}
+
 
 \begin{frame}{Reverse proxy in front of the container}
     Our containerized server speaks plain HTTP on port 8000, and we are not going to teach it HTTPS directly.
@@ -310,6 +325,7 @@ api.example.com.   A   <vm-ip>
 
     The standard pattern is to put a \textbf{reverse proxy} in front: a separate program that listens on ports 80 and 443, terminates HTTPS, and forwards the decrypted request to our container.
 \end{frame}
+
 
 \begin{frame}[fragile]{Nginx}
     The most common reverse proxy. Small and fast, around since 2004.
@@ -326,6 +342,7 @@ sudo apt install -y nginx
         Starts automatically, serves a default welcome page on port 80.
     \end{block}
 \end{frame}
+
 
 \begin{frame}[fragile]{Minimal Nginx config}
     Create \texttt{/etc/nginx/sites-available/api.example.com}:
@@ -351,6 +368,7 @@ server {
     \end{itemize}
 \end{frame}
 
+
 \begin{frame}[fragile]{Enable, test, reload}
     \begin{minted}{bash}
 sudo ln -s /etc/nginx/sites-available/api.example.com \
@@ -368,6 +386,7 @@ sudo systemctl reload nginx
     Drop port 8000 from the public firewall.
 \end{frame}
 
+
 \begin{frame}[fragile]{Certbot for Let's Encrypt}
     \begin{figure}[htpb]
         \begin{center}
@@ -384,6 +403,7 @@ sudo certbot --nginx -d api.example.com
     Certbot validates the domain (places a file under \texttt{/.well-known/}, lets Let's Encrypt fetch it), installs the cert, edits the Nginx config to add the \texttt{listen 443 ssl;} block, sets up auto-renewal.
 \end{frame}
 
+
 \begin{frame}[fragile]{All together}
     Visit \texttt{https://api.example.com} in a browser. Padlock icon, certificate issued by Let's Encrypt.
     HTTP requests redirect to HTTPS automatically.
@@ -397,6 +417,7 @@ sudo certbot renew --dry-run
 \end{minted}
 
 \end{frame}
+
 
 
 \section{Exercise}
@@ -414,6 +435,7 @@ sudo certbot renew --dry-run
     \end{block}
 \end{frame}
 
+
 \begin{frame}{Extensions}
     \begin{enumerate}
         \item Get a free domain on DuckDNS, point an A record at the VM
@@ -422,6 +444,7 @@ sudo certbot renew --dry-run
         \item Update the A.2 client to use the HTTPS URL, confirm requests still go through
     \end{enumerate}
 \end{frame}
+
 
 \begin{frame}{What you should walk away with}
     By the end of the exercise, you should be able to:
@@ -435,6 +458,7 @@ sudo certbot renew --dry-run
     Our AI server is now a public service backed by infrastructure we do not own.
     In the next module, we look at the opposite choice: running on hardware we do own, at the edge.
 \end{frame}
+
 
 
 \appendix
