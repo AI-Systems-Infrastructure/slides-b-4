@@ -23,7 +23,7 @@
 \institute{%
     \href{https://www.yanlincs.com}{www.yanlincs.com}
 }
-\date{September 1st, 2026}
+\date{November 9th, 2026}
 \usepackage{AAU}
 \AtBeginSubsection{}
 \setbeamertemplate{navigation symbols}{}
@@ -84,109 +84,157 @@ subsubsectionstyle=show/shaded/hide]
 \end{frame}
 
 
+\section{Introduction}
 
-\section{Whose Machine Runs the Container}
-
-\begin{frame}{Recap: where we are}
-    In Module B.3 we packaged our AI API server into a container image that anyone with Docker can pull and run.
-
-    That solves the \textit{how do we ship the software} problem.
-    It leaves the \textit{whose machine does it run on} problem wide open.
-\note{
-}
-\end{frame}
-
-
-\begin{frame}{Our laptop is not the answer}
-    Running the container on our laptop is fine for development.
-    As soon as we want anyone else to use the API, our laptop becomes a bad host.
-
+\begin{frame}{Recap of Module B.3: Building AI-enabled Containers}{Ship AI systems with containers}
+  \begin{block}{The premise of containers}
     \begin{itemize}
-        \item We probably do not want it powered on 24/7
-        \item Our home electricity and internet connection might not be reliable
-        \item The moment the laptop goes to sleep, the API stops responding
+      \item A container \textbf{packs everything a piece of software needs in one self-contained package}
+      \item Building our AI systems as containers makes it easy to deploy them
     \end{itemize}
+  \end{block}
 
-    \vspace{0.5em}
-    The standard answer: rent a computer somewhere else, and run our container there.
+  \begin{block}{Working with containers in practice}
+    \begin{itemize}
+      \item \textbf{The Docker ecosystem} gives us everything we need to use, build, and deploy containers
+      \item Using \textbf{Dockerfile} to build our AI systems as container images
+      \item Using \textbf{Docker Hub} to distribute container images
+      \item Using \textbf{Docker client} and \textbf{Docker engine} to deploy containers
+    \end{itemize}
+  \end{block}
+
+  % TODO: Embed a diagram derivative of /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-docker-ecosystem.drawio, but shorter and more compact to fit here
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Hardware theory and software stack combined}
+  \begin{itemize}
+    \item \textbf{Module B.1: AI Hardware Infrastructure:} most computers follow the same hardware architecture
+    \item \textbf{Module B.2--B.3: Containers:} software stack for streamlined AI system deployment, leveraging the shared hardware architecture of computers
+  \end{itemize}
+
+  % TODO: Embed a diagram, which is right part (containers) of /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-vm-vs-container.drawio, with the bottom box "hardware" replaced with "hardware following the Von Neumann architecture".
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Where to deploy?}
+  \textit{Our personal computer} is usually not the answer.
+
+  \begin{itemize}
+    \item Laptops cannot realistically be powered on 24/7
+    \item Desktop computers at home may not have robust network and electricity infrastructure
+    \item Computers running heavily in a living space won't be a great experience
+  \end{itemize}
+
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Module B.4: Cloud Deployment}
+  \textit{Typical answer:} Deploy our AI system on a rented computer somewhere other than our living space, managed by someone other than us.
+
+  % TODO: Embed diagram /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b4-cloud-virtualization.drawio
 \note{
 }
 \end{frame}
 
 
 
-\section{What Is the Cloud}
+\section{The Cloud}
 
-\begin{frame}{Other people's computers}
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=0.45\textwidth]{network_cloud_diagram}
-        \end{center}
-    \end{figure}
 
-    Not a new kind of computing or a special technology.
-    The cloud is other people's computers, sitting in data centers, that we rent over the internet.
+\begin{frame}{What is the cloud?}{Official definition by ISO}
+  A paradigm for enabling network access to a scalable and elastic pool of shareable physical or virtual resources with self-service provisioning and administration on demand.
+
+  % TODO: Embed a new diagram, replicating https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Cloud_computing.svg/250px-Cloud_computing.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail
 \note{
 }
 \end{frame}
 
 
-\begin{frame}{Why the cloud exists}
-    Around 2006, Amazon noticed that the infrastructure they had to size for peak shopping load sat idle most of the time.
-    That idle capacity could be rented to other people who would otherwise have to buy their own servers.
+\begin{frame}{What is the cloud?}{My simplified definition}
+  A computer or a specific computing service that we can access remotely over the internet.
+  \begin{itemize}
+    \item Usually, the hardware behind the cloud sits in \textbf{data centers}
+    \item Technically, a cloud computer can be used for anything a personal computer can do, except for things that strictly require physical access to the hardware
+    \item The hardware and part of the software are owned and managed by someone else; we are renting them, subject to specific terms
+  \end{itemize}
 
-    \begin{block}{For us as customers}
-        \begin{itemize}
-            \item A new computer ready in minutes instead of weeks
-            \item Pay for what we use rather than buying hardware up front
-            \item Someone else worries about hardware failures, electricity, and network
-        \end{itemize}
-    \end{block}
-
-    \begin{block}{The downside}
-        We are now dependent on the provider's pricing, availability, and policies.
-    \end{block}
+  % TODO: Embed a image of a data center hosting cloud computers
 \note{
 }
 \end{frame}
 
 
-\begin{frame}{Virtualization, the technical trick}
-    A single physical server in a data center is a powerful machine, often with dozens of cores and hundreds of gigabytes of RAM, far more than most small customers need.
+\begin{frame}{Why call it ``the cloud''?}
+  \begin{itemize}
+    \item Source: network diagrams, where a \textit{fluffy cloud symbol} is used to convey ``somewhere out there is the network, the details do not matter''
+    \item The symbolic meaning of the cloud gradually shifted to represent ``computing resources at the other end of the internet''
+  \end{itemize}
 
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=0.45\textwidth]{virtualization}
-        \end{center}
-    \end{figure}
-
-    Virtualization lets the provider slice that machine into many smaller \textbf{virtual machines} through a small piece of software called a hypervisor.
-    Each VM behaves like a complete computer with its own CPU, memory, disk, and OS.
+  % TODO: Embed a diagram showing one example of such network diagrams
 \note{
 }
 \end{frame}
 
 
-\begin{frame}{Containers and VMs, side by side}
-    We met containers in Module B.2 with the same kind of diagram. Both provide isolation, at different levels.
+\begin{frame}{How the cloud came into existence}
+  IT companies rent out computing resources they accumulated to handle peak hours that are idle most of the time.
 
-    \begin{block}{VM}
-        Virtualizes the entire hardware and runs its own kernel.
-        Can run a completely different OS from the host.
-    \end{block}
-
-    \begin{block}{Container}
-        Shares the host's kernel and only ships userspace files.
-        Lighter, but the host kernel ultimately decides what is allowed.
-    \end{block}
-
-    In practice cloud providers rely on both: the hypervisor splits each physical server into VMs sold to different customers, and inside each VM the customer typically runs containers to package and deploy applications.
+  % TODO: Embed a online diagram/image showing how Amazon in 2006 see the majority of their computing resources sits idle apart from peak shopping periods, and decides to rent them out.
 \note{
 }
 \end{frame}
 
 
-\begin{frame}{The big three and the rest}
+\begin{frame}{The cloud as a business model}
+  \begin{block}{Benefits for us consumers}
+    \begin{itemize}
+      \item A new computer can be set up and ready to use within minutes
+      \item Pay for what we use, mitigate the need for purchasing hardware up front
+      \item We do not need to worry about the management of the hardware, network infrastructure, electricity, etc.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Downsides for us consumers}
+    We never own the hardware and are subject to the cloud provider's pricing, terms, and conditions
+  \end{block}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Virtualization: The technology powering the cloud}
+  \begin{itemize}
+    \item Virtualization can slice a powerful computer's hardware (e.g., CPU cores, memory, hard drive) or computing resources in general (e.g., CPU core hours) into small pieces (virtual machines)
+    \item Each virtual machine can have its own operating system and everything above, isolated from other virtual machines
+  \end{itemize}
+  This allows us to rent cloud computers that fit exactly into our needs.
+
+  % TODO: Embed the diagram /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-vm-vs-container.drawio (only the left "Virtual machines" part)
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Virtualization vs. containerization}
+  \begin{itemize}
+    \item \textbf{Virtualization:} virtualizes the entire hardware, allowing each virtual machine to run its own operating system
+    \item \textbf{Containerization:} all containers share the host computer's operating system's kernel
+  \end{itemize}
+
+  % TODO: Embed the diagram /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-vm-vs-container.drawio
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Common cloud providers}
     \begin{block}{Hyperscalers}
         \begin{itemize}
             \item AWS: the original, biggest catalog
@@ -195,293 +243,221 @@ subsubsectionstyle=show/shaded/hide]
         \end{itemize}
     \end{block}
 
-    \begin{block}{Smaller providers, often a better fit for individuals}
+    \begin{block}{Smaller providers}
         \begin{itemize}
             \item DigitalOcean, Linode, Vultr: clean UIs, predictable pricing
             \item Lambda, CoreWeave, RunPod: GPU rentals at lower prices
             \item Hetzner, OVHcloud, Scaleway: EU-based, often cheap basic VMs
         \end{itemize}
     \end{block}
-
-    \vspace{0.3em}
-    For this course it does not matter which one. The recipe (rent a VM, install Docker, run your container) translates across all of them.
 \note{
 }
 \end{frame}
 
 
 
-\section{Common Cloud Services}
+\section{Deploying on the cloud}
 
-\begin{frame}{Three categories that matter for us}
-    \begin{block}{Virtual machines}
-        A rented VM we can SSH into and treat as our own server.
-        We install whatever we want, get charged per hour the VM is running.
-        EC2, Compute Engine, Azure VMs.
-    \end{block}
 
-    \begin{block}{Container services}
-        The provider runs our Docker container without us managing the underlying VM, often with autoscaling.
-        ECS, Cloud Run, Container Apps.
-    \end{block}
-
-    \begin{block}{GPU instances}
-        VMs with one or more GPUs attached, for training models or running inference on heavier ones.
-        Powerful but among the most expensive line items.
-    \end{block}
+\begin{frame}{Cloud service models}
+% TODO: Embed a diagram reproducing https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Comparison_of_on-premise%2C_IaaS%2C_PaaS%2C_and_SaaS.png/1280px-Comparison_of_on-premise%2C_IaaS%2C_PaaS%2C_and_SaaS.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail
 \note{
 }
 \end{frame}
 
 
-\begin{frame}{Why start with a plain VM}
-    A reasonable first instinct when browsing a cloud catalog is to reach for the most automated option.
-    For learning and small AI services, we argue the opposite is usually wiser.
-
-    \begin{block}{Predictable cost}
-        A small VM rents at a fixed hourly or monthly rate, regardless of traffic.
-        Usage-based services have produced six-figure bills from static sites, four-figure S3 charges from scraped buckets, GPU instances left running through the weekend.
-    \end{block}
-
-    \begin{block}{Transparency}
-        On a VM we install Docker ourselves, run our container with \texttt{docker run}, and when something breaks we can SSH in and check \texttt{docker logs}.
-        Managed services tend to wrap our app in their own scheduling, networking, and logging layers.
-    \end{block}
+\begin{frame}{Common cloud computing products}
+  % TODO: Embed a variant of the above diagram, with terms swapped to demonstrate the three specific cloud computing products: virtual machines (IaaS), container services (PaaS), managed AI (SaaS)
 \note{
 }
 \end{frame}
 
 
-
-\section{Deploying to a Cloud VM}
-
-\begin{frame}{The flow is always the same}
-\begin{minipage}[t]{0.4\textwidth}
-    Every provider has a slightly different web console, but the deployment flow is always the same.
-
-    \begin{enumerate}
-        \item Create a VM
-        \item SSH in
-        \item Install Docker
-        \item Run the container
-    \end{enumerate}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.58\textwidth}
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=1.0\textwidth]{vm-creation}
-        \end{center}
-    \end{figure}
-\end{minipage}
+\begin{frame}{Common cloud computing products}{Virtual machines}
+  % TODO: Embed a diagram showcasing common virtual machine services from cloud providers
 \note{
 }
 \end{frame}
 
 
-\begin{frame}[fragile]{Once the VM boots}
-    SSH in, install Docker following the official guide.
-    Then run the container.
-
-    \begin{minted}{bash}
-docker run -d --name ai-server \
-    -p 8000:8000 \
-    --restart unless-stopped \
-    yourusername/my-ai-server:1.0
-    \end{minted}
-
-    \texttt{--restart unless-stopped} brings the container back up after crashes or VM reboots.
-
-    Then, from your laptop:
-    \begin{minted}{bash}
-curl http://<vm-ip>:8000
-    \end{minted}
+\begin{frame}{Common cloud computing products}{Platform as a Service}
+  % TODO: Embed a diagram showcasing common PaaS from cloud providers/proprietary PaaS platforms
 \note{
 }
 \end{frame}
 
 
+\begin{frame}{Common cloud computing products}{Software as a Service}
+  % TODO: Embed a diagram showcasing common SaaS from cloud providers/proprietary SaaS platforms
+\note{
+}
+\end{frame}
 
-\section{Going Public}
 
-\begin{frame}{What is still missing}
-    The container is now reachable at \texttt{http://<vm-ip>:8000}, which is technically a working public AI service but almost no one would actually use it.
+\begin{frame}{Why choose virtual machines}{Suitable for learning}
+  \begin{itemize}
+    \item \textbf{Transparency:} A virtual machine works exactly like a Linux computer; setting up Docker and deploying containers provides a great hands-on experience
+    \item \textbf{Transferable:} The experience of working with a virtual machine is largely the same across all cloud providers
+  \end{itemize}
 
+  % TODO: Embed the two screenshots /Users/yanlin/Downloads/Screenshot 2026-11-06 at 15.30.34.png and /Users/yanlin/Downloads/Screenshot 2026-11-06 at 15.31.03.png side by side, with the caption "Find the difference".
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Why choose virtual machines}{Predictable cost}
+  Most virtual machines have fixed pricing. PaaS and SaaS widely adopt ``usage-based pricing'', which can lead to unexpected bills.
+
+  % TODO: Embed one or two screenshots from social media about horror stories of unexpected bills from PaaS/SaaS.
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Deploy on cloud virtual machines}{Create a virtual machine}
+  Create a virtual machine on a cloud provider of your choice. Each provider might name its virtual machine service differently, but the actual flow is basically the same.
+
+  \begin{block}{Live demo on different providers}
     \begin{itemize}
-        \item An IP is not how most people find things on the internet. Hard to remember, and fragile when the VM changes
-        \item Plain HTTP traffic is unencrypted. Any network in between can read and modify it
-        \item Modern browsers increasingly refuse to talk to non-HTTPS endpoints
+      \item AWS: ``Amazon Elastic Compute Cloud (Amazon EC2)''
+      \item Azure: ``Virtual machines''
+      \item Hetzner: ``Create a server''
     \end{itemize}
-
-    \vspace{0.5em}
-The fix is to have a \textbf{domain name} and an \textbf{HTTPS certificate}.
+  \end{block}
 \note{
 }
 \end{frame}
 
 
-\begin{frame}[fragile]{Domains and DNS}
-    Recall from Module A.1: domain points to one or more IP addresses.
-    The Domain Name System turns names into addresses.
+\begin{frame}{Deploy on cloud virtual machines}{Set up the basics}
+  Essentially the same workflow as setting up the runtime environment on a brand-new computer with Linux just installed, except that we operate the computer remotely.
 
-    We need an \textbf{A record} mapping our domain to our VM's IP.
-    \begin{minted}{text}
-api.example.com.   A   <vm-ip>
-    \end{minted}
-
-    \begin{block}{Where to get a domain}
-        \begin{itemize}
-            \item DuckDNS: free subdomain like \texttt{myaiapi.duckdns.org}
-            \item Registrars (Cloudflare, Porkbun, Namecheap): own domain, 10-15 EUR per year for a typical \texttt{.com}
-        \end{itemize}
-    \end{block}
+  \begin{itemize}
+    \item Access the virtual machine through SSH or remote desktop
+    \item Install the Docker engine and Docker client following the official guide (for the operating system we have)
+    \item Pull and run the container we distributed onto Docker Hub before
+  \end{itemize}
 \note{
 }
 \end{frame}
 
 
-\begin{frame}{Why HTTPS}
-    HTTPS (HTTP over TLS) wraps HTTP in an encrypted, authenticated tunnel.
-    \begin{itemize}
-        \item Encrypts traffic so a network observer sees only scrambled data. Only the sender and the receiver can decrypt the data
-        \item Lets the client verify it is talking to the real \texttt{api.example.com} via a certificate
-    \end{itemize}
+\begin{frame}{Deploy on cloud virtual machines}{Set up the basics}
+  Essentially the same workflow as setting up the runtime environment on a brand-new computer with Linux just installed, except that we operate the computer remotely.
 
-    Since 2015, \textbf{Let's Encrypt} issues free, automated certificates, valid 90 days and renewable indefinitely.
-\note{
-}
-\end{frame}
-
-
-\begin{frame}{Reverse proxy in front of the container}
-    Our containerized server speaks plain HTTP on port 8000, and we are not going to teach it HTTPS directly.
-
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=0.5\textwidth]{reverse_proxy_diagram}
-        \end{center}
-    \end{figure}
-
-    The standard pattern is to put a \textbf{reverse proxy} in front: a separate program that listens on ports 80 and 443, terminates HTTPS, and forwards the decrypted request to our container.
-\note{
-}
-\end{frame}
-
-
-\begin{frame}[fragile]{Nginx}
-    The most common reverse proxy. Small and fast, around since 2004.
-
-    \begin{itemize}
-        \item A single Nginx instance handles tens of thousands of simultaneous connections on modest hardware
-        \item Functionalities beyond HTTPS termination: access logs, rate limits, caching, compression, load balancing, serving static files
-    \end{itemize}
-
-    \begin{block}{Install on Ubuntu}
-        \begin{minted}{bash}
-sudo apt install -y nginx
-        \end{minted}
-        Starts automatically, serves a default welcome page on port 80.
-    \end{block}
-\note{
-}
-\end{frame}
-
-
-\begin{frame}[fragile]{Minimal Nginx config}
-    Create \texttt{/etc/nginx/sites-available/api.example.com}:
-    \begin{minted}{nginx}
-server {
-    listen 80;
-    server_name api.example.com;
-
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-    \end{minted}
-
-    \begin{itemize}
-        \item \texttt{server} block: rules for one site
-        \item \texttt{location /}: matches every path, forwards to our container
-        \item Four \texttt{proxy\_set\_header} lines preserve client info that Nginx would otherwise strip
-    \end{itemize}
-\note{
-}
-\end{frame}
-
-
-\begin{frame}[fragile]{Enable, test, reload}
-    \begin{minted}{bash}
-sudo ln -s /etc/nginx/sites-available/api.example.com \
-           /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl reload nginx
-    \end{minted}
-
-    \begin{itemize}
-        \item \texttt{nginx -t} validates the config without applying. Always run before reload
-        \item \texttt{reload} swaps configs without dropping active connections, unlike \texttt{restart}
-    \end{itemize}
-
-    Now \texttt{http://api.example.com} reaches our container.
-    Drop port 8000 from the public firewall.
-\note{
-}
-\end{frame}
-
-
-\begin{frame}[fragile]{Certbot for Let's Encrypt}
-    \begin{figure}[htpb]
-        \begin{center}
-            \includegraphics[width=0.35\textwidth]{lets_encrypt}
-        \end{center}
-    \end{figure}
-
-    \begin{minted}{bash}
-sudo apt install -y certbot python3-certbot-nginx
-sudo ufw allow 80/tcp 443/tcp
-sudo certbot --nginx -d api.example.com
-    \end{minted}
-
-    Certbot validates the domain (places a file under \texttt{/.well-known/}, lets Let's Encrypt fetch it), installs the cert, edits the Nginx config to add the \texttt{listen 443 ssl;} block, sets up auto-renewal.
-\note{
-}
-\end{frame}
-
-
-\begin{frame}[fragile]{All together}
-    Visit \texttt{https://api.example.com} in a browser. Padlock icon, certificate issued by Let's Encrypt.
-    HTTP requests redirect to HTTPS automatically.
-
-    \vspace{0.5em}
-    Renewal runs through a systemd timer Certbot installed.
-    Dry-run to confirm:
-
-\begin{minted}{bash}
-sudo certbot renew --dry-run
-\end{minted}
-
+  \begin{itemize}
+    \item Access the virtual machine through SSH or remote desktop
+    \item Install the Docker engine and Docker client following the official guide (for the operating system we have)
+    \item Pull and run the container we distributed onto Docker Hub before
+  \end{itemize}
 \note{
 }
 \end{frame}
 
 
 
-\section{Exercise}
+\section{Public Endpoints}
 
-\begin{frame}{Deploy your server to the cloud}
-    Take the image from the Module B.3 exercise. Bring it up on a cloud VM.
-    Point the A.2 client at it.
+
+\begin{frame}{Current status of our API endpoints}
+  They are publicly reachable by clients over the internet, but not in a shape we want.
+
+  \begin{itemize}
+    \item \textbf{Raw IP address:} The endpoint is only reachable through our cloud computer's IP address
+      \begin{itemize}
+        \item An IP address is hard to remember and looks unprofessional
+        \item An IP address cannot transfer to a new virtual machine if we ever need to migrate our service
+      \end{itemize}
+    \item \textbf{Unencrypted HTTP traffic:} The full content of the requests clients send to our API server, and the responses it sends back, is visible to anyone on the same network path
+      \begin{itemize}
+        \item A huge security loophole since the requests and responses might contain highly personal or confidential information
+        \item Most modern clients and web browsers block unencrypted HTTP traffic altogether
+      \end{itemize}
+  \end{itemize}
+
+  \vspace{1em}
+  \textbf{Live demo:} The reading material (blog site) deployed on a cloud virtual machine.
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Give a domain to our API endpoints}{Domain name}
+\textbf{A unique identifier} pointing to some network resource, with \textit{one or more corresponding IP addresses}.
+
+% TODO: Embed a diagram of how DNS server map a domain name to one or more IP addresses.
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Give a domain to our API endpoints}{Register a domain}
+  \begin{itemize}
+    \item Unique domains can be purchased from registrars like Cloudflare and Amazon Route 53
+    \item Free domains can be obtained from places like DuckDNS for learning purposes
+  \end{itemize}
+  For a domain we own, we can create a \textbf{DNS record} pointing one of its subdomains to one IP address.
+
+  \vspace{1em}
+  \textbf{Live demo:} Register and manage a domain on Cloudflare.
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Enable HTTPS for our API endpoints}{What is HTTPS?}
+  HTTPS (HTTP over TLS) encrypts HTTP traffic, and only the clients and our server can decrypt the data.
+
+  % TODO: Embed a diagram briefly explaining how HTTPS works.
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Enable HTTPS for our API endpoints}{Obtain certificates for our domain}
+  For a domain we own, we can request an HTTPS certificate from free services like \textit{Let's Encrypt}.
+
+  % TODO: Bullet point of the rough steps to do this.
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Enable HTTPS for our API endpoints}{Wrap our API endpoints behind a reverse proxy}
+  % TODO: One sentence explain how reverse proxy make the HTTPS certificate we obtained above working and make our endpoints accessible through HTTPS.
+
+  % TODO: Embed a diagram showing the reverse proxy structure (how a incoming traffic reaches our endpoints sitting behind the reverse proxy and how the certificate is handled)
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Enable HTTPS for our API endpoints}{Simpler solutions}
+  % TODO: Bullet points of common simpler solutions for enable HTTPS endpoints, like Traefik that integrates reverse proxy and HTTPS certificate management, or one-click solutions like Cloudflare tunnel.
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{Enable HTTPS for our API endpoints}
+  \textbf{Live demo:} Production-ready homepage and blog site with domain names, URL redirection, and HTTPS enabled (and enforced).
+\note{
+}
+\end{frame}
+
+
+
+\section{Conclusion}
+
+\begin{frame}{Exercise: Deploy our AI system to the cloud}
+    Take the image from the Module B.3 exercise and deploy it on a cloud virtual machine.
 
     \begin{block}{Outline}
         \begin{enumerate}
-            \item Pick a provider. Free tier (AWS/GCP/Azure trial credits) or cheap small VM (Hetzner, DO, Vultr)
-            \item Create a small VM and set up the basic runtime
-            \item Pull your image and run it, then point the A.2 client at \texttt{http://<VM\_IP>:<PORT>} and run a few requests
+            \item Pick a provider that provides free-tier virtual machines (AWS/GCP/Azure trial credits) or cheap small ones (Hetzner, DO, Vultr)
+            \item Create a virtual machine and set up the basic runtime environment
+            \item Pull your AI system container image and run it, then use the A.2 client to send requests to its endpoints
         \end{enumerate}
     \end{block}
 \note{
@@ -489,29 +465,11 @@ sudo certbot renew --dry-run
 \end{frame}
 
 
-\begin{frame}{Extensions}
-    \begin{enumerate}
-        \item Get a free domain on DuckDNS, point an A record at the VM
-        \item Install Nginx, configure it as a reverse proxy on port 80. Confirm the API still works through \texttt{http://<your-domain>}
-        \item Get an HTTPS certificate with Certbot and Let's Encrypt
-        \item Update the A.2 client to use the HTTPS URL, confirm requests still go through
-    \end{enumerate}
-\note{
-}
-\end{frame}
-
-
-\begin{frame}{What you should walk away with}
-    By the end of the exercise, you should be able to:
-    \begin{enumerate}
-        \item Understand what the cloud is, and why a plain VM is a sensible starting point
-        \item Deploy a containerized AI server onto a cloud VM
-        \item Make a service public with a domain name and HTTPS
-    \end{enumerate}
-
-    \vspace{0.5em}
-    Our AI server is now a public service backed by infrastructure we do not own.
-    In the next module, we look at the opposite choice: running on hardware we do own, at the edge.
+\begin{frame}{Preview of the next module}
+  \begin{itemize}
+    \item \textbf{In this module:} The cloud is convenient and hassle-free; we should always pick the cloud for our AI system deployment!
+    \item \textbf{In the next module:} Actually, there are cases and benefits for deploying on hardware that we own and have physical access to.
+  \end{itemize}
 \note{
 }
 \end{frame}
