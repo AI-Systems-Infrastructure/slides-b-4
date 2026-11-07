@@ -102,8 +102,19 @@ subsubsectionstyle=show/shaded/hide]
       \item Using \textbf{Docker client} and \textbf{Docker engine} to deploy containers
     \end{itemize}
   \end{block}
+\note{
+}
+\end{frame}
 
-  % TODO: Embed a diagram derivative of /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-docker-ecosystem.drawio, but shorter and more compact to fit here
+
+\begin{frame}{Recap of Module B.3: Building AI-enabled Containers}{The Docker ecosystem}
+  The tools we use to build, distribute, and deploy our AI systems as containers.
+
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=\textwidth]{module-b4-docker-ecosystem}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -115,7 +126,11 @@ subsubsectionstyle=show/shaded/hide]
     \item \textbf{Module B.2--B.3: Containers:} software stack for streamlined AI system deployment, leveraging the shared hardware architecture of computers
   \end{itemize}
 
-  % TODO: Embed a diagram, which is right part (containers) of /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-vm-vs-container.drawio, with the bottom box "hardware" replaced with "hardware following the Von Neumann architecture".
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.58\textheight,keepaspectratio]{module-b4-vm-vs-container-container}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -138,7 +153,11 @@ subsubsectionstyle=show/shaded/hide]
 \begin{frame}{Module B.4: Cloud Deployment}
   \textit{Typical answer:} Deploy our AI system on a rented computer somewhere other than our living space, managed by someone other than us.
 
-  % TODO: Embed diagram /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b4-cloud-virtualization.drawio
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.66\textheight,keepaspectratio]{module-b4-cloud-virtualization}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -151,7 +170,11 @@ subsubsectionstyle=show/shaded/hide]
 \begin{frame}{What is the cloud?}{Official definition by ISO}
   A paradigm for enabling network access to a scalable and elastic pool of shareable physical or virtual resources with self-service provisioning and administration on demand.
 
-  % TODO: Embed a new diagram, replicating https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Cloud_computing.svg/250px-Cloud_computing.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.6\textheight,keepaspectratio]{module-b4-cloud-computing}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -159,13 +182,25 @@ subsubsectionstyle=show/shaded/hide]
 
 \begin{frame}{What is the cloud?}{My simplified definition}
   A computer or a specific computing service that we can access remotely over the internet.
-  \begin{itemize}
-    \item Usually, the hardware behind the cloud sits in \textbf{data centers}
-    \item Technically, a cloud computer can be used for anything a personal computer can do, except for things that strictly require physical access to the hardware
-    \item The hardware and part of the software are owned and managed by someone else; we are renting them, subject to specific terms
-  \end{itemize}
 
-  % TODO: Embed a image of a data center hosting cloud computers
+  \begin{columns}[T]
+  \begin{column}{0.58\textwidth}
+    \begin{itemize}
+      \item Usually, the hardware behind the cloud sits in \textbf{data centers}
+      \item Technically, a cloud computer can be used for anything a personal computer can do, except for things that strictly require physical access to the hardware
+      \item The hardware and part of the software are owned and managed by someone else; we are renting them, subject to specific terms
+    \end{itemize}
+  \end{column}
+
+  \begin{column}{0.4\textwidth}
+    \begin{figure}[htpb]
+        \begin{center}
+            \includegraphics[width=\linewidth]{cern-data-centre}
+            \caption*{Inside the CERN Data Centre, home to CERN's private cloud}
+        \end{center}
+    \end{figure}
+  \end{column}
+  \end{columns}
 \note{
 }
 \end{frame}
@@ -177,7 +212,11 @@ subsubsectionstyle=show/shaded/hide]
     \item The symbolic meaning of the cloud gradually shifted to represent ``computing resources at the other end of the internet''
   \end{itemize}
 
-  % TODO: Embed a diagram showing one example of such network diagrams
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.56\textheight,keepaspectratio]{module-b4-network-diagram}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -186,7 +225,12 @@ subsubsectionstyle=show/shaded/hide]
 \begin{frame}{How the cloud came into existence}
   IT companies rent out computing resources they accumulated to handle peak hours that are idle most of the time.
 
-  % TODO: Embed a online diagram/image showing how Amazon in 2006 see the majority of their computing resources sits idle apart from peak shopping periods, and decides to rent them out.
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.56\textheight,keepaspectratio]{amazon-november-traffic}
+          \caption*{Capacity bought for the November peak (red line) leaves 76\% of it idle. Source: AWS, \textit{Migrating Amazon.com to AWS} (2011)}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -216,7 +260,11 @@ subsubsectionstyle=show/shaded/hide]
   \end{itemize}
   This allows us to rent cloud computers that fit exactly into our needs.
 
-  % TODO: Embed the diagram /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-vm-vs-container.drawio (only the left "Virtual machines" part)
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.46\textheight,keepaspectratio]{module-b4-vm-vs-container-vm}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -228,7 +276,11 @@ subsubsectionstyle=show/shaded/hide]
     \item \textbf{Containerization:} all containers share the host computer's operating system's kernel
   \end{itemize}
 
-  % TODO: Embed the diagram /Users/yanlin/Documents/Projects/ai-systems/assets/src/module-b2-vm-vs-container.drawio
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.55\textheight,keepaspectratio]{module-b2-vm-vs-container}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -260,35 +312,55 @@ subsubsectionstyle=show/shaded/hide]
 
 
 \begin{frame}{Cloud service models}
-% TODO: Embed a diagram reproducing https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Comparison_of_on-premise%2C_IaaS%2C_PaaS%2C_and_SaaS.png/1280px-Comparison_of_on-premise%2C_IaaS%2C_PaaS%2C_and_SaaS.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.95\textwidth,height=0.84\textheight,keepaspectratio]{module-b4-cloud-service-models}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
 
 
 \begin{frame}{Common cloud computing products}
-  % TODO: Embed a variant of the above diagram, with terms swapped to demonstrate the three specific cloud computing products: virtual machines (IaaS), container services (PaaS), managed AI (SaaS)
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.95\textwidth,height=0.84\textheight,keepaspectratio]{module-b4-cloud-service-models-products}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
 
 
 \begin{frame}{Common cloud computing products}{Virtual machines}
-  % TODO: Embed a diagram showcasing common virtual machine services from cloud providers
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{module-b4-cloud-services-vm}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
 
 
 \begin{frame}{Common cloud computing products}{Platform as a Service}
-  % TODO: Embed a diagram showcasing common PaaS from cloud providers/proprietary PaaS platforms
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{module-b4-cloud-services-paas}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
 
 
 \begin{frame}{Common cloud computing products}{Software as a Service}
-  % TODO: Embed a diagram showcasing common SaaS from cloud providers/proprietary SaaS platforms
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{module-b4-cloud-services-saas}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -300,7 +372,14 @@ subsubsectionstyle=show/shaded/hide]
     \item \textbf{Transferable:} The experience of working with a virtual machine is largely the same across all cloud providers
   \end{itemize}
 
-  % TODO: Embed the two screenshots /Users/yanlin/Downloads/Screenshot 2026-11-06 at 15.30.34.png and /Users/yanlin/Downloads/Screenshot 2026-11-06 at 15.31.03.png side by side, with the caption "Find the difference".
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.43\textwidth]{vm-terminal-1}
+          \hspace{0.03\textwidth}
+          \includegraphics[width=0.43\textwidth]{vm-terminal-2}
+          \caption*{Find the difference}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -309,7 +388,19 @@ subsubsectionstyle=show/shaded/hide]
 \begin{frame}{Why choose virtual machines}{Predictable cost}
   Most virtual machines have fixed pricing. PaaS and SaaS widely adopt ``usage-based pricing'', which can lead to unexpected bills.
 
-  % TODO: Embed one or two screenshots from social media about horror stories of unexpected bills from PaaS/SaaS.
+  \begin{figure}[htpb]
+      \begin{center}
+          \begin{subfigure}[t]{0.485\textwidth}
+              \includegraphics[width=\textwidth]{bill-netlify-reddit}
+              \caption{PaaS: \$104K for bandwidth on Netlify}
+          \end{subfigure}
+          \hfill
+          \begin{subfigure}[t]{0.485\textwidth}
+              \includegraphics[width=\textwidth]{bill-gemini-reddit}
+              \caption{SaaS: \$82K for a stolen Gemini API key}
+          \end{subfigure}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -372,7 +463,11 @@ subsubsectionstyle=show/shaded/hide]
 \begin{frame}{Give a domain to our API endpoints}{Domain name}
 \textbf{A unique identifier} pointing to some network resource, with \textit{one or more corresponding IP addresses}.
 
-% TODO: Embed a diagram of how DNS server map a domain name to one or more IP addresses.
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.66\textheight,keepaspectratio]{module-b4-dns}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -395,7 +490,11 @@ subsubsectionstyle=show/shaded/hide]
 \begin{frame}{Enable HTTPS for our API endpoints}{What is HTTPS?}
   HTTPS (HTTP over TLS) encrypts HTTP traffic, and only the clients and our server can decrypt the data.
 
-  % TODO: Embed a diagram briefly explaining how HTTPS works.
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.66\textheight,keepaspectratio]{module-b4-https}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
@@ -404,23 +503,45 @@ subsubsectionstyle=show/shaded/hide]
 \begin{frame}{Enable HTTPS for our API endpoints}{Obtain certificates for our domain}
   For a domain we own, we can request an HTTPS certificate from free services like \textit{Let's Encrypt}.
 
-  % TODO: Bullet point of the rough steps to do this.
+  \begin{enumerate}
+    \item Point the domain to our virtual machine with a DNS record
+    \item Install an ACME client, such as \textit{Certbot}, on the virtual machine
+    \item Request a certificate for the domain; the ACME client proves to Let's Encrypt that we control the domain
+    \item Receive the certificate and its private key, stored on the virtual machine
+  \end{enumerate}
 \note{
 }
 \end{frame}
 
 
 \begin{frame}{Enable HTTPS for our API endpoints}{Wrap our API endpoints behind a reverse proxy}
-  % TODO: One sentence explain how reverse proxy make the HTTPS certificate we obtained above working and make our endpoints accessible through HTTPS.
+  A reverse proxy (e.g., Nginx) faces the internet. It holds the certificate and private key, accepts HTTPS connections from clients, decrypts them, and forwards the requests as plain HTTP to our API endpoints.
 
-  % TODO: Embed a diagram showing the reverse proxy structure (how a incoming traffic reaches our endpoints sitting behind the reverse proxy and how the certificate is handled)
+  \begin{figure}[htpb]
+      \begin{center}
+          \includegraphics[width=0.9\textwidth,height=0.55\textheight,keepaspectratio]{module-b4-reverse-proxy}
+      \end{center}
+  \end{figure}
 \note{
 }
 \end{frame}
 
 
 \begin{frame}{Enable HTTPS for our API endpoints}{Simpler solutions}
-  % TODO: Bullet points of common simpler solutions for enable HTTPS endpoints, like Traefik that integrates reverse proxy and HTTPS certificate management, or one-click solutions like Cloudflare tunnel.
+  \begin{block}{Reverse proxies with built-in certificate management}
+    \begin{itemize}
+      \item \textbf{Caddy:} obtains and renews certificates automatically for every domain it serves
+      \item \textbf{Traefik:} discovers our containers via Docker labels and gets certificates for them
+      \item \textbf{Nginx Proxy Manager:} a web UI on top of Nginx to set up proxies and certificates
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{One-click tunnels}
+    \begin{itemize}
+      \item \textbf{Cloudflare Tunnel:} a connector on our virtual machine opens an outbound tunnel to Cloudflare, which serves our endpoints over HTTPS
+      \item Similar services: ngrok, Tailscale Funnel
+    \end{itemize}
+  \end{block}
 \note{
 }
 \end{frame}
